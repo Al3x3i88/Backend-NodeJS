@@ -1,5 +1,8 @@
 const express = require('express');
 const bodyparser = require('body-parser')
+
+const response = require('./network/response') 
+
 const router = express.Router();
 const PORT = process.env.PORT || 3001;
 
@@ -12,13 +15,19 @@ router.get('/message', function (req, res){
     res.header({
         "custom-header": "Nuestro valor personalizado"
     })
-    res.send('Lista de Mensajes')
+    
+    response.success(req, res, 'Lista de Mensajes')
 })
 
-router.delete('/message', function (req, res){
+router.post('/message', function (req, res){
     console.log(req.query);
-    console.log(req.body);
-    res.send('Mensaje   '+ req.body.text + ' Anadido correctamente')
+    if (req.query.error == 'ok') {
+        response.error(req, res, 'Error Simulado')
+    }else{
+
+        response.success(req, res, 'Creado correctamente', 201)
+    }
+    // res.status(201).send({error: '', body: 'Creado correctamente'})
 })
 
 app.listen(PORT, ()=>{
