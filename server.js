@@ -30,6 +30,8 @@ router.post('/message', function (req, res){
     // res.status(201).send({error: '', body: 'Creado correctamente'})
 })
 
+app.use('/app', express.static('static'))
+
 app.listen(PORT, ()=>{
 
     console.log(`Server on port ${PORT}`);
