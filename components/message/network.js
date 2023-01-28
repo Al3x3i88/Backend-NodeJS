@@ -1,7 +1,8 @@
 const express = require('express');
-const router = express.Router();
-
+const controller = require('./controller')
 const response = require('../../network/response') 
+
+const router = express.Router();
 
 router.get('/', function (req, res){
     console.log(req.headers);
@@ -13,14 +14,14 @@ router.get('/', function (req, res){
 })
 
 router.post('/', function (req, res){
-    console.log(req.query);
-    if (req.query.error == 'ok') {
-        response.error(req, res, 'Error Simulado')
-    }else{
 
-        response.success(req, res, 'Creado correctamente', 201)
-    }
-    // res.status(201).send({error: '', body: 'Creado correctamente'})
+    controller.addMessage(req.body.user, req.body.message)
+    .then((fullMessage)=>{
+        response.success(req, res, fullMessage, 201 );
+    })
+    .catch(e=>{
+        response.error(req, res, 'Informacion invalida', 400, 'Error en el controler')
+    })
 })
 
 module.exports = router;
